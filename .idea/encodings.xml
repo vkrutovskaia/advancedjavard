@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accA.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accB.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accC.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accD.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accE.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accF.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accG.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accH.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accI.bin" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/Accounts/accJ.bin" charset="windows-1251" />
+  </component>
+</project>

@@ -1,0 +1,8 @@
+
+H
+java:S1199"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ
+H
+java:S1199%"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(®ƒ÷ùÿÿÿÿ
+O
+java:S4719:"9Replace charset name argument with StandardCharsets.UTF_8(šªØ•
