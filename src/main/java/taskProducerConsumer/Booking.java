@@ -98,7 +98,7 @@ public class Booking {
 
     public synchronized Runnable put(Runnable booking) {
       if (bookings.size() == CAPACITY) {
-        logger.warning("Max capacity, waiting for removing requests");
+        logger.warning("Max capacity, waiting for removing request");
         try {
           wait();
 

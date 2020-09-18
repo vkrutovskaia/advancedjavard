@@ -111,7 +111,7 @@ public class Operations {
 
     // Waiting for all tasks to complete
     boolean rezWait = service.awaitTermination(
-        (10), TimeUnit.SECONDS);
+        (300), TimeUnit.SECONDS);
 
     if (!rezWait) {
       logger.warning("Not all tasks have completed");

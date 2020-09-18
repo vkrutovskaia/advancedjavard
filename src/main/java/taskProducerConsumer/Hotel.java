@@ -15,11 +15,6 @@ public class Hotel {
   public Hotel() {
   }
 
-  public Hotel(int roomId, Date date, String hotel) {
-    this.roomId = roomId;
-    this.date = date;
-    this.hotel = hotel;
-  }
 
   public int getRoomId() {
     return roomId;
