@@ -8,7 +8,8 @@ import java.util.Random;
 public class Hotel {
 
   private int roomId = new Random().nextInt(15);
-  private Date date = new Date(current().nextInt() * 1000L);;
+  private Date date = new Date(current().nextInt() * 1000L);
+
   private String hotel = "Boris Burda Hotel Deluxe";
 
   public Hotel() {

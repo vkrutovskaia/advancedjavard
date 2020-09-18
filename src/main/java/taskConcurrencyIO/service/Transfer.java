@@ -13,7 +13,7 @@ public class Transfer implements Callable<Boolean> {
 
   private static final AtomicInteger idGenerator = new AtomicInteger();
 
-  private static final int LOCK_WAIT_SEC = 5;
+  private static final int LOCK_WAIT_SEC = 3;
 
   private final int id;
 

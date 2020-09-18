@@ -3,8 +3,10 @@ package taskConcurrencyIO.utilites;
 import static java.text.MessageFormat.format;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -42,6 +44,9 @@ public class Operations {
     Account accJ = (Account) ois.readObject();
     ois.close();
 
+    FileOutputStream fos = new FileOutputStream("src/main/resources/Accounts/accounts.bin");
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+
     Random rnd = new Random();
 
     transferAbStart = System.currentTimeMillis();
@@ -52,12 +57,7 @@ public class Operations {
 
     CyclicBarrier abBarrier = new CyclicBarrier(NUM_A_B_TRANSFERS,
 
-        new Runnable() {
-          @Override
-          public void run() {
-            transferAbEnd = System.currentTimeMillis();
-          }
-        });
+        () -> transferAbEnd = System.currentTimeMillis());
 
     ExecutorService service = Executors.newFixedThreadPool(20);
 
@@ -67,41 +67,36 @@ public class Operations {
             .getBalance() + accE.getBalance() + accF.getBalance() + accG.getBalance() + accH
             .getBalance() + accI.getBalance() + accJ.getBalance()) + "$");
 
-    for (int k = 0; k < 125; k++) {
-      service.submit(new Transfer(accA, accB, rnd.nextInt(50), true,
+    for (int k = 0; k < 111; k++) {
+      service.submit(new Transfer(accA, accB, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accB, accC, rnd.nextInt(50), true,
+      service.submit(new Transfer(accB, accC, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accC, accD, rnd.nextInt(50), true,
+      service.submit(new Transfer(accC, accD, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accD, accE, rnd.nextInt(50), true,
+      service.submit(new Transfer(accD, accE, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accF, accG, rnd.nextInt(50), true,
+      service.submit(new Transfer(accF, accG, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accG, accH, rnd.nextInt(50), true,
+      service.submit(new Transfer(accG, accH, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accH, accI, rnd.nextInt(50), true,
+      service.submit(new Transfer(accH, accI, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-      service.submit(new Transfer(accI, accJ, rnd.nextInt(50), true,
+      service.submit(new Transfer(accI, accJ, rnd.nextInt(2000), true,
           startLatch, baLatch, abBarrier));
-    }
-    for (int l = 0; l < 125; l++) {
-      service.submit(new Transfer(accB, accA, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accC, accB, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accD, accC, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accE, accD, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accG, accF, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accH, accG, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accI, accH, rnd.nextInt(50), true,
-          baLatch, null, null));
-      service.submit(new Transfer(accJ, accI, rnd.nextInt(50), true,
-          baLatch, null, null));
+      service.submit(new Transfer(accJ, accA, rnd.nextInt(10000), true,
+          baLatch, baLatch, abBarrier));
+
+      oos.writeObject(accA);
+      oos.writeObject(accB);
+      oos.writeObject(accC);
+      oos.writeObject(accD);
+      oos.writeObject(accE);
+      oos.writeObject(accF);
+      oos.writeObject(accG);
+      oos.writeObject(accH);
+      oos.writeObject(accI);
+      oos.writeObject(accJ);
     }
 
     service.shutdown();
@@ -116,7 +111,7 @@ public class Operations {
 
     // Waiting for all tasks to complete
     boolean rezWait = service.awaitTermination(
-        (100 + 100), TimeUnit.SECONDS);
+        (10), TimeUnit.SECONDS);
 
     if (!rezWait) {
       logger.warning("Not all tasks have completed");
@@ -126,8 +121,31 @@ public class Operations {
               + accD
               .getBalance() + accE.getBalance() + accF.getBalance() + accG.getBalance() + accH
               .getBalance() + accI.getBalance() + accJ.getBalance()) + "$");
+
+      logger.info("Failed accA transfers count: " + accA.getFailCount() + "\n"
+          + "Failed accB transfers count: " + accB.getFailCount() + "\n"
+          + "Failed accC transfers count: " + accC.getFailCount() + "\n"
+          + "Failed accD transfers count: " + accD.getFailCount() + "\n"
+          + "Failed accE transfers count: " + accE.getFailCount() + "\n"
+          + "Failed accF transfers count: " + accF.getFailCount() + "\n"
+          + "Failed accG transfers count: " + accG.getFailCount() + "\n"
+          + "Failed accH transfers count: " + accH.getFailCount() + "\n"
+          + "Failed accI transfers count: " + accI.getFailCount() + "\n"
+          + "Failed accJ transfers count: " + accJ.getFailCount());
+
+      logger.info("Interim accA balance: " + accA.getBalance()+ "$" + "\n"
+          + "Interim accB balance: " + accB.getBalance()+ "$" + "\n"
+          + "Interim accC balance: " + accC.getBalance()+ "$" + "\n"
+          + "Interim accD balance: " + accD.getBalance()+ "$" + "\n"
+          + "Interim accE balance: " + accE.getBalance()+ "$" + "\n"
+          + "Interim accF balance: " + accF.getBalance()+ "$" + "\n"
+          + "Interim accG balance: " + accG.getBalance()+ "$" + "\n"
+          + "Interim accH balance: " + accH.getBalance()+ "$" + "\n"
+          + "Interim accI balance: " + accI.getBalance()+ "$" + "\n"
+          + "Interim accJ balance: " + accJ.getBalance()+ "$");
     }
 
-    logger.info(format("Overall time for A->B transfers is: {0} ms", transferAbEnd - transferAbStart));
+    logger.info(
+        format("Overall time for A->B transfers is: {0} ms", transferAbEnd - transferAbStart));
   }
 }
